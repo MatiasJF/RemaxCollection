@@ -57,3 +57,7 @@ C:\Users\matan\Desktop\FILES\STUDIES\CODE\ASP.NET\RemaxWebsite\RemaxWebsite\obj\
 C:\Users\matan\Desktop\FILES\STUDIES\CODE\ASP.NET\RemaxWebsite\RemaxWebsite\obj\Debug\RemaxWebsite.csproj.CopyComplete
 C:\Users\matan\Desktop\FILES\STUDIES\CODE\ASP.NET\RemaxWebsite\RemaxWebsite\obj\Debug\RemaxWebsite.dll
 C:\Users\matan\Desktop\FILES\STUDIES\CODE\ASP.NET\RemaxWebsite\RemaxWebsite\obj\Debug\RemaxWebsite.pdb
+C:\Users\matan\Desktop\FILES\STUDIES\CODE\ASP.NET\RemaxWebsite\RemaxWebsite\bin\EntityFramework.dll
+C:\Users\matan\Desktop\FILES\STUDIES\CODE\ASP.NET\RemaxWebsite\RemaxWebsite\bin\EntityFramework.SqlServer.dll
+C:\Users\matan\Desktop\FILES\STUDIES\CODE\ASP.NET\RemaxWebsite\RemaxWebsite\bin\EntityFramework.xml
+C:\Users\matan\Desktop\FILES\STUDIES\CODE\ASP.NET\RemaxWebsite\RemaxWebsite\bin\EntityFramework.SqlServer.xml
