@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="RemaxWebsite.index" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="RemaxWebsite.index" MaintainScrollPositionOnPostback="true" %>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -35,7 +35,7 @@
     <main>
         <section class="main-search">
             <div class="form" id="search_form" runat="server">
-                <button>
+                <button runat="server" id="search_button">
                     <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
                         aria-labelledby="search">
                         <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
@@ -52,7 +52,18 @@
                 </button>
             </div>
             <div class="search-filters" id="mainFilters" runat="server">
+                 <p style='display: flex;align-items: center;gap: 4px;'>
+                    Popular searches 
+                    <span>
+                        <svg width='20' height='20' fill='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+                            <path d='M15.755 14.255h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99 1.49-1.49-4.99-5Zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5Z'></path>
+                        </svg>
+                    </span>
+                </p>
+                <br />
+                <div class='filters'>
                 <!-- FILLED ON SERVER SIDE -->
+                </div>
             </div>
         </section>
         <div class="result-filters">

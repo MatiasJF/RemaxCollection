@@ -167,8 +167,15 @@ main>section.main-search {
     justify-content: center;
 }
 
+.search-filters {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
-.form button {
+
+button#search_button {
     border: none;
     background: none;
     color: #8b8ba7;

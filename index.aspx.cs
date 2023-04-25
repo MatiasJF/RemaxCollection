@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Routing;
 using System.Web.UI;
@@ -12,13 +13,14 @@ namespace RemaxWebsite
 {
     public partial class index : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
+                // Checks if the QueryString(URL) has any filtered requests
                 if (Request.QueryString.Count > 0)
                 {
-                    filterSpecificProperties();
+                    filterResults();
                     showFilters();
                 }
                 else
@@ -31,32 +33,25 @@ namespace RemaxWebsite
 
         private void showFilters()
         {
+            // Show Popular Filter Buttons
             mainFilters.Controls.Clear();
-            string html = $@"
-                <p style='display: flex;align-items: center;gap: 4px;'>
-                    Popular searches 
-                    <span>
-                        <svg width='20' height='20' fill='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-                            <path d='M15.755 14.255h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99 1.49-1.49-4.99-5Zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5Z'></path>
-                        </svg>
-                    </span>
-                </p>
-                <br />
-                <div class='filters'>
-                    <a href='?where=Houses&col=Type&filter=Appartement' class='btn'>Appartements</a>
-                    <a href='?where=Houses&col=Type&filter=Bungalo' class='btn'>Bungalo</a>
-                    <a href='?where=Houses&col=City&filter=Montreal' class='btn'>Montreal</a>
-                    <a href='?where=Houses&col=Model&filter=Residenciel' class='btn'>Residenciel</a>
-                    <a href='?where=Houses&col=Model&filter=Commercial' class='btn'>Commercial</a>
-                    <a href='?where=Agents&col=City&filter=Montreal' class='btn'>Montreal Agents</a>
-                    <a href='?where=Agents&col=City&filter=Laval' class='btn'>Laval Agents</a>
-                </div>
-            ";
-            mainFilters.Controls.Add(new LiteralControl(html));
+            mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Houses", "Type", "Appartement", "Appartements")));
+            mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Houses", "Type", "Bungalo", "Bungalos")));
+            mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Houses", "City", "Montreal", "Montreal Listings")));
+            mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Houses", "Model", "Commercial", "Commercial Houses")));
+            mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Houses", "Model", "Residenciel", "Residencial Houses")));
+            mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Agents", "City", "Montreal", "Montreal Agents")));
+            mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Agents", "City", "Laval", "Laval Agents")));
         }
 
+        private string GenerateFilterButton(string where, string col, string filter, string buttonText)
+        {
+            // Generate Filter Buttons
+            string html = $"<a href='?where={where}&col={col}&filter={filter}' class='btn'>{buttonText}</a>";
+            return html.ToString();
+        }
 
-        protected void showAllHouses()
+        private void showAllHouses()
         {
             mainResults.Controls.Clear();
             // Get all the houses
@@ -65,20 +60,31 @@ namespace RemaxWebsite
             housesCard(houses);
         }
 
-        protected void showSpecificHouses(string col, string filter)
+        private void showAllAgents()
         {
+            mainResults.Controls.Clear();
+            // Get all the agents
+            AgentsList agentsList = Datasource.GetAllAgents();
+            var agents = agentsList.Agents;
+            agentCard(agents);
+        }
+
+        private void showSpecificHouses(string col, string filter)
+        {
+            // Gets Houses depending on the column and filter
             HousesList filteredHouses = Datasource.GetHousesByParam(col, filter);
             var houses = filteredHouses.Houses;
             housesCard(houses);
         }
-        protected void showSpecificAgents(string col, string filter)
+        private void showSpecificAgents(string col, string filter)
         {
+            // Gets Agents depending on the column and filter
             AgentsList filteredAgent = Datasource.GetAgentsByParam(col, filter);
             var agent = filteredAgent.Agents;
             agentCard(agent);
         }
 
-        protected void housesCard(Dictionary<string,House>.ValueCollection houses)
+        private void housesCard(Dictionary<string,House>.ValueCollection houses)
         {
             mainResults.Controls.Clear();
             // Loop through the houses and generate HTML code for each card
@@ -94,12 +100,12 @@ namespace RemaxWebsite
                     </div>
                 ";
 
-                // Add the HTML code to the section with class 'main-results'
+                // Add the HTML code to the section with ID 'main-results'
                 mainResults.Controls.Add(new LiteralControl(html));
             }
         }
 
-        protected void agentCard(Dictionary<string, Agent>.ValueCollection agents)
+        private void agentCard(Dictionary<string, Agent>.ValueCollection agents)
         {
             // Loop through the agents and generate HTML code for each card
             foreach (Agent agent in agents)
@@ -114,25 +120,18 @@ namespace RemaxWebsite
                             </div>
                             <div class='agent-contact'>
                                 <button class='btn' id='{agent.AgentID}_msg' class='agent-message'>Message</button>
-                                <button class='btn' class='agent-phone'>{agent.Phone}</button>
+                                <button class='btn' class='agent-phone' disabled>{agent.Phone}</button>
                             </div>
                         </div>
                     </div>
                 ";
 
-                // Add the HTML code to the section with class 'main-results'
+                // Add the HTML code to the section with ID 'main-results'
                 mainResults.Controls.Add(new LiteralControl(html));
             }
         }
 
-        protected void ShowAgentsCards()
-        {
-            mainResults.Controls.Clear();
-            // Get all the agents
-            AgentsList agentsList = Datasource.GetAllAgents();
-            var agents = agentsList.Agents;
-            agentCard(agents);
-        }
+      
 
         protected void filterProperties(object sender, EventArgs e)
         {
@@ -142,11 +141,11 @@ namespace RemaxWebsite
 
         protected void filterAgents(object sender, EventArgs e)
         {
-            ShowAgentsCards();
+            showAllAgents();
             showFilters();
         }
 
-        protected void filterSpecificProperties()
+        protected void filterResults()
         {
             if (Request.QueryString["where"] == "Houses")
             {
@@ -155,7 +154,12 @@ namespace RemaxWebsite
             if (Request.QueryString["where"] == "Agents")
             {
                 showSpecificAgents(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
-            } 
+            }
+            else
+            {
+                showAllHouses();
+                showFilters();
+            }
         }
     }
 }
