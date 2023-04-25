@@ -13,21 +13,42 @@ namespace RemaxWebsite
 {
     public partial class index : System.Web.UI.Page
     {
-        private void Page_Load(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
-                // Checks if the QueryString(URL) has any filtered requests
-                if (Request.QueryString.Count > 0)
+                ProcessRequestQuery();
+                showFilters();
+            }
+        }
+
+        private void ProcessRequestQuery()
+        {
+            if (Request.QueryString.Count > 0)
+            {
+                if (Request.QueryString["search"] != null)
                 {
-                    filterResults();
-                    showFilters();
+                    searchProperties(Request.QueryString["search"].ToString());
+                }
+                else if (Request.QueryString["where"] != null && Request.QueryString["col"] != null && Request.QueryString["filter"] != null)
+                {
+                    if (Request.QueryString["where"] == "Houses")
+                    {
+                        showSpecificHouses(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
+                    }
+                    else if (Request.QueryString["where"] == "Agents")
+                    {
+                        showSpecificAgents(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
+                    }
                 }
                 else
                 {
                     showAllHouses();
-                    showFilters();
                 }
+            }
+            else
+            {
+                showAllHouses();
             }
         }
 
@@ -43,6 +64,7 @@ namespace RemaxWebsite
             mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Agents", "City", "Montreal", "Montreal Agents")));
             mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Agents", "City", "Laval", "Laval Agents")));
         }
+
 
         private string GenerateFilterButton(string where, string col, string filter, string buttonText)
         {
@@ -161,5 +183,24 @@ namespace RemaxWebsite
                 showFilters();
             }
         }
+
+        protected void searchProperties(string keyword)
+        {
+            mainResults.Controls.Clear();
+
+            var housesList = Datasource.GetAllHouses();
+            var houses = housesList.Houses;
+            var filteredHouses = houses.Where(h => h.CivicNumber.ToLower().Contains(keyword.ToLower()) || h.City.ToLower().Contains(keyword.ToLower()) || h.Type.ToLower().Contains(keyword.ToLower()) || h.Model.ToLower().Contains(keyword.ToLower())).ToDictionary(h => h.HouseID, h => h);
+            housesCard(filteredHouses.Values);
+
+            var agentsList = Datasource.GetAllAgents();
+            var agents = agentsList.Agents;
+            var filteredAgents = agents.Where(a => a.FirstName.ToLower().Contains(keyword.ToLower()) || a.LastName.ToLower().Contains(keyword.ToLower()) || a.City.ToLower().Contains(keyword.ToLower())).ToDictionary(a => a.AgentID, a => a);
+            agentCard(filteredAgents.Values);
+        }
+
+
+
+
     }
 }

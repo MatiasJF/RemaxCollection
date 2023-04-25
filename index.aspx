@@ -35,7 +35,7 @@
     <main>
         <section class="main-search">
             <div class="form" id="search_form" runat="server">
-                <button runat="server" id="search_button">
+                <button type="button" id="search_button">
                     <svg width="17" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
                         aria-labelledby="search">
                         <path d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
@@ -43,7 +43,15 @@
                         </path>
                     </svg>
                 </button>
-                <input class="input" placeholder="Search properties" type="text" />
+                <script type="text/javascript">
+                    document.getElementById("search_button").addEventListener("click", searchKeyword);
+
+                    function searchKeyword() {
+                        let keyword = document.getElementById('searchKeyword').value;
+                        window.location.href = '?search=' + encodeURIComponent(keyword);
+                    }
+                </script>
+                <input class="input" placeholder="Search properties" type="text" id='searchKeyword' />
                 <button class="reset" type="reset">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
