@@ -22,6 +22,7 @@ namespace RemaxWebsite
         protected string _Province;
         protected string _City;
         protected string _PostalCode;
+        protected string _Image;
         protected Decimal _CurrentPrice;  //Ex: $573'000
 
 
@@ -35,6 +36,7 @@ namespace RemaxWebsite
             this._Province =
             this._City =
             this._PostalCode =
+            this._Image =
             "n/a";
 
             this._CurrentPrice = 0;
@@ -50,6 +52,7 @@ namespace RemaxWebsite
             this._Province =
             this._City =
             this._PostalCode =
+            this._Image =
             "n/a";
 
             this._CurrentPrice = 0;
@@ -64,7 +67,8 @@ namespace RemaxWebsite
             string Country,
             string Province, 
             string City, 
-            string PostalCode, 
+            string PostalCode,
+            string Image,
             Decimal CurrentPrice
             )
         {
@@ -76,6 +80,7 @@ namespace RemaxWebsite
             this._Province = Province;
             this._City = City;
             this._PostalCode = PostalCode;
+            this._Image = Image;
             this._CurrentPrice = CurrentPrice;
         }
 
@@ -86,7 +91,7 @@ namespace RemaxWebsite
             string Country,
             string Province,
             string City,
-            string Street,
+            string Image,
             string PostalCode
             )
         {
@@ -95,6 +100,7 @@ namespace RemaxWebsite
             this._Country = Country;
             this._Province = Province;
             this._City = City;
+            this._Image = Image;
             this._PostalCode = PostalCode;
         }
 
@@ -106,73 +112,55 @@ namespace RemaxWebsite
         public string CivicNumber
         {
             get => this._CivicNumber; 
-            set 
-            { 
-                this._CivicNumber = value; 
-            }
+            set => this._CivicNumber = value; 
         }
 
         public String Type
         {
             get => this._Type;
-            set
-            {
-                this._Type = value;
-            }
+            set => this._Type = value;
         }
 
         public String Model
         {
             get => this._Model;
-            set
-            {
-                this._Model = value;
-            }
+            set => this._Model = value;
         }
 
         public String Country
         {
             get => this._Country; 
-            set
-            {
-                this._Country = value;
-            }
+            set => this._Country = value;
         }
 
         public String Province
         {
             get => this._Province; 
-            set
-            {
-                this._Province = value;
-            }
+            set => this._Province = value;
         }
 
         public String City
         {
             get => this._City;
-            set
-            {
-                this._City = value;
-            }
+            set => this._City = value;
         }
 
         public String PostalCode
         {
             get => this._PostalCode;
-            set
-            {
-                this.PostalCode = value;
-            }
+            set => this.PostalCode = value;
         }
 
         public Decimal Price
         {
             get => this._CurrentPrice; 
-            set
-            {
-                this._CurrentPrice = value;
-            }
+            set => this._CurrentPrice = value;
+        }
+
+        public String Image
+        {
+            get => this._Image;
+            set=> this._Image = value;
         }
 
         public void Subscribe

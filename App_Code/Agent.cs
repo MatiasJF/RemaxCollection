@@ -20,6 +20,9 @@ namespace RemaxWebsite
         protected string _Email;
         protected string _Nip;
         protected string _Phone;
+        protected string _Address;
+        protected string _City;
+        protected string _image;
         protected ClientsList _Clients;
 
         public Agent()
@@ -30,6 +33,9 @@ namespace RemaxWebsite
             this._Email =
             this._Nip =
             this._Phone =
+            this._Address =
+            this._City =
+            this._image =
             "n/a";
 
             this._Clients = new ClientsList();
@@ -43,12 +49,15 @@ namespace RemaxWebsite
             this._Email =
             this._Nip =
             this._Phone =
+            this._Address =
+             this._City =
+            this._image =
             "n/a";
 
             this._Clients = new ClientsList();
         }
 
-        public Agent(string AgentID, string FirstName, string LastName, string Email, string Nip, string Phone, ClientsList Clients)
+        public Agent(string AgentID, string FirstName, string LastName, string Email, string Nip, string Phone, string Address, string City, string image, ClientsList Clients)
         {
             this._id = AgentID;
             this._FirstName = FirstName;
@@ -56,10 +65,13 @@ namespace RemaxWebsite
             this._Email = Email;
             this._Nip = Nip;
             this._Phone = Phone;
+            this._Address = Address;
+            this._City = City;
+            this._image = image;
             this._Clients = Clients;
         }
 
-        public Agent(string AgentID, string FirstName, string LastName, string Email, string Nip, string Phone)
+        public Agent(string AgentID, string FirstName, string LastName, string Email, string Nip, string Phone, string Address, string City, string image)
         {
             this._id = AgentID;
             this._FirstName = FirstName;
@@ -67,6 +79,9 @@ namespace RemaxWebsite
             this._Email = Email;
             this._Nip = Nip;
             this._Phone = Phone;
+            this.Address = Address;
+            this._City = City;
+            this._image = image;
             this._Clients = new ClientsList();
         }
 
@@ -99,6 +114,22 @@ namespace RemaxWebsite
         {
             get => this._Phone; 
             set => this._Phone = value;
+        }
+        public String Address
+        {
+            get => this._Address;
+            set => this._Address = value;
+        }
+
+        public String City
+        {
+            get => this._City;
+            set => this._City = value;
+        }
+        public String Image
+        {
+            get => this._image;
+            set => this._image = value;
         }
         public ClientsList Clients
         {

@@ -265,26 +265,61 @@ div.search-filters>div.filters {
 }
 
 main>section.main-results {
-    padding: 35px 140px;
+    padding: 35px 75px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 35px;
 }
 
 
-.card {
+.house-card,
+.agent-card{
     transition: 0.3s;
     border: 1px solid rgba(128, 128, 128, 0.503);
     border-radius: 5px;
 }
 
-.card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+.agent-card {
+    display:flex;
+    align-self:center;
+    justify-content:center;
+    border-radius: 10px;
+    width:max-content;
 }
+
+    .house-card:has(:hover),
+    .agent-card:has(:hover) {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
 
 .container {
     position: relative;
     padding: 20px 20px;
+}
+
+.house-card img {
+    width: 100%;
+}
+
+.container-alt {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 20px 20px;
+    gap: 15px;
+    width: 350px;
+    height: 135px;
+}
+
+    .container-alt img{
+        width: 50px;
+        border-radius: 100%;
+    }
+
+.agent-contact {
+    display: flex;
+    flex-direction: column;
+    gap:5px;
 }
 
 .container .price {
@@ -306,7 +341,6 @@ div.result-filters {
 
 div.grp-btn {
     padding: 17.5px;
-    ;
     display: flex;
     gap: 17.5px;
 }
@@ -390,6 +424,12 @@ footer {
 
     main>section.main-results {
         grid-template-columns: 1fr;
+    }
+
+    .container-alt {
+        flex-direction: row;
+        padding: 20px 32px;
+        width: 350px;
     }
 }
 
