@@ -27,7 +27,7 @@
                         </path>
                     </svg>
                 </i>
-                <span>Sign In</span>
+                <span runat="server" id="connectedUser"><!-- FILLED ON SERVER --></span>
             </a>
         </nav>
     </header>
@@ -77,8 +77,8 @@
         <div class="result-filters">
             <h2>Explore RE<span style="color:var(--blue); font-weight: bold;">/</span>MAX</h2>
             <div class="grp-btn">
-                <asp:Button CssClass="btn" runat="server" ID="filter_properties" Text="Properties" OnClick="filterProperties" />
-                <asp:Button CssClass="btn" runat="server" ID="filter_agents" Text="Agents" OnClick="filterAgents" />
+                <asp:Button CssClass="btn" runat="server" ID="filter_properties" Text="Properties" OnClick="FilterProperties" />
+                <asp:Button CssClass="btn" runat="server" ID="filter_agents" Text="Agents" OnClick="FilterAgents" />
             </div>
         </div>
         <section class="main-results" id="mainResults" runat="server">

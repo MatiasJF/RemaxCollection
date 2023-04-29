@@ -71,6 +71,7 @@ namespace RemaxWebsite
             return clientsList;
         }
 
+
         public static HousesList GetClientHouses(string ClientID)
         {
             HousesList housesList = new HousesList();
@@ -201,6 +202,131 @@ namespace RemaxWebsite
 
             return agentsList;
         }
+
+        public static string GetClientNameByEmail(string email)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT FirstName, LastName FROM Client WHERE Email = @Email";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    string firstName = reader["FirstName"].ToString();
+                    string lastName = reader["LastName"].ToString();
+
+                    return firstName + " " + lastName;
+                }
+
+                return null;
+            }
+        }
+
+        public static string GetAgentNameByEmail(string email)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT FirstName, LastName FROM Agent WHERE Email = @Email";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+
+                connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    string firstName = reader["FirstName"].ToString();
+                    string lastName = reader["LastName"].ToString();
+
+                    return firstName + " " + lastName;
+                }
+
+                return null;
+            }
+        }
+
+
+
+
+        public static void AddUser(Client user)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Client (FirstName, LastName, Email, Password, Phone) VALUES (@FirstName, @LastName, @Email, @Password, @Phone)";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@FirstName", user.FirstName.ToString());
+                command.Parameters.AddWithValue("@LastName", user.LastName.ToString());
+                command.Parameters.AddWithValue("@Email", user.Email.ToString());
+                command.Parameters.AddWithValue("@Password", user.Password.ToString());
+                command.Parameters.AddWithValue("@Phone", user.Phone.ToString());
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void AddAgent(Agent agent)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Agent (FirstName, LastName, Email, Nip, Phone, Address, City, Image) " +
+                               "VALUES (@FirstName, @LastName, @Email, @Nip, @Phone, @Address, @City, @Image)";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@FirstName", agent.FirstName);
+                command.Parameters.AddWithValue("@LastName", agent.LastName);
+                command.Parameters.AddWithValue("@Email", agent.Email);
+                command.Parameters.AddWithValue("@Nip", agent.Nip);
+                command.Parameters.AddWithValue("@Phone", agent.Phone);
+                command.Parameters.AddWithValue("@Address", agent.Address);
+                command.Parameters.AddWithValue("@City", agent.City);
+                command.Parameters.AddWithValue("@Image", agent.Image);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+
+
+        public static bool LoginUser(string email, string password)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Client WHERE Email = @Email AND Password = @Password";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Password", password);
+
+                connection.Open();
+                int count = (int)command.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+
+        public static bool AgentLogin(string email, string password)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Agent WHERE Email = @Email AND Nip = @Nip";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+                command.Parameters.AddWithValue("@Nip", password);
+
+                connection.Open();
+
+                int count = (int)command.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
+
 
 
 

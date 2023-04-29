@@ -15,46 +15,59 @@ namespace RemaxWebsite
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            CheckUserConnected();
+
             if (!Page.IsPostBack)
             {
+                ShowFilters();
                 ProcessRequestQuery();
-                showFilters();
             }
         }
 
+        //Checks if user is connected in Session. if it is the case display the user's name
+        protected void CheckUserConnected()
+        {
+            string connectedUserValid = (Session["connectedUser"] != null && !string.IsNullOrEmpty(Session["connectedUser"].ToString()))
+                ? Session["connectedUser"].ToString()
+                : "sign in";
+            connectedUser.Controls.Add(new LiteralControl(connectedUserValid));
+        }
+
+        // Process the request query depending on the clicked filter or entered keyword
+        // Shows the filtered results if any
         private void ProcessRequestQuery()
         {
             if (Request.QueryString.Count > 0)
             {
                 if (Request.QueryString["search"] != null)
                 {
-                    searchProperties(Request.QueryString["search"].ToString());
+                    SearchByKeywords(Request.QueryString["search"].ToString());
                 }
                 else if (Request.QueryString["where"] != null && Request.QueryString["col"] != null && Request.QueryString["filter"] != null)
                 {
                     if (Request.QueryString["where"] == "Houses")
                     {
-                        showSpecificHouses(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
+                        ShowSpecificHouses(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
                     }
                     else if (Request.QueryString["where"] == "Agents")
                     {
-                        showSpecificAgents(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
+                        ShowSpecificAgents(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
                     }
                 }
                 else
                 {
-                    showAllHouses();
+                    ShowAllHouses(); // Default display
                 }
             }
             else
             {
-                showAllHouses();
+                ShowAllHouses(); // Default display
             }
         }
 
-        private void showFilters()
+        // Show Popular Filter Buttons
+        private void ShowFilters()
         {
-            // Show Popular Filter Buttons
             mainFilters.Controls.Clear();
             mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Houses", "Type", "Appartement", "Appartements")));
             mainFilters.Controls.Add(new LiteralControl(GenerateFilterButton("Houses", "Type", "Bungalo", "Bungalos")));
@@ -66,47 +79,53 @@ namespace RemaxWebsite
         }
 
 
+        // Generate The Filter Buttons
         private string GenerateFilterButton(string where, string col, string filter, string buttonText)
         {
-            // Generate Filter Buttons
             string html = $"<a href='?where={where}&col={col}&filter={filter}' class='btn'>{buttonText}</a>";
             return html.ToString();
         }
 
-        private void showAllHouses()
+        // Shows all Remax Houses
+        private void ShowAllHouses()
         {
             mainResults.Controls.Clear();
             // Get all the houses
             HousesList housesList = Datasource.GetAllHouses();
             var houses = housesList.Houses;
-            housesCard(houses);
+            HousesCard(houses);
         }
 
-        private void showAllAgents()
+        // Shows all Remax Agents
+        private void ShowAllAgents()
         {
             mainResults.Controls.Clear();
             // Get all the agents
             AgentsList agentsList = Datasource.GetAllAgents();
             var agents = agentsList.Agents;
-            agentCard(agents);
+            AgentCard(agents);
         }
 
-        private void showSpecificHouses(string col, string filter)
+        // Shows Filtered Remax Houses
+        private void ShowSpecificHouses(string col, string filter)
         {
             // Gets Houses depending on the column and filter
             HousesList filteredHouses = Datasource.GetHousesByParam(col, filter);
             var houses = filteredHouses.Houses;
-            housesCard(houses);
+            HousesCard(houses);
         }
-        private void showSpecificAgents(string col, string filter)
+
+        // Shows Filtered Remax Agnets
+        private void ShowSpecificAgents(string col, string filter)
         {
             // Gets Agents depending on the column and filter
             AgentsList filteredAgent = Datasource.GetAgentsByParam(col, filter);
             var agent = filteredAgent.Agents;
-            agentCard(agent);
+            AgentCard(agent);
         }
 
-        private void housesCard(Dictionary<string,House>.ValueCollection houses)
+        // HTML House Card
+        private void HousesCard(Dictionary<string, House>.ValueCollection houses)
         {
             mainResults.Controls.Clear();
             // Loop through the houses and generate HTML code for each card
@@ -127,7 +146,8 @@ namespace RemaxWebsite
             }
         }
 
-        private void agentCard(Dictionary<string, Agent>.ValueCollection agents)
+        // HTML Agent Card
+        private void AgentCard(Dictionary<string, Agent>.ValueCollection agents)
         {
             // Loop through the agents and generate HTML code for each card
             foreach (Agent agent in agents)
@@ -153,54 +173,32 @@ namespace RemaxWebsite
             }
         }
 
-      
-
-        protected void filterProperties(object sender, EventArgs e)
+        protected void FilterProperties(object sender, EventArgs e)
         {
-            showAllHouses();
-            showFilters();
+            ShowAllHouses();
+            ShowFilters();
         }
 
-        protected void filterAgents(object sender, EventArgs e)
+        protected void FilterAgents(object sender, EventArgs e)
         {
-            showAllAgents();
-            showFilters();
+            ShowAllAgents();
+            ShowFilters();
         }
 
-        protected void filterResults()
-        {
-            if (Request.QueryString["where"] == "Houses")
-            {
-                showSpecificHouses(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
-            }
-            if (Request.QueryString["where"] == "Agents")
-            {
-                showSpecificAgents(Request.QueryString["col"].ToString(), Request.QueryString["filter"].ToString());
-            }
-            else
-            {
-                showAllHouses();
-                showFilters();
-            }
-        }
-
-        protected void searchProperties(string keyword)
+        // Search result and display by keyword 
+        protected void SearchByKeywords(string keyword)
         {
             mainResults.Controls.Clear();
 
             var housesList = Datasource.GetAllHouses();
             var houses = housesList.Houses;
             var filteredHouses = houses.Where(h => h.CivicNumber.ToLower().Contains(keyword.ToLower()) || h.City.ToLower().Contains(keyword.ToLower()) || h.Type.ToLower().Contains(keyword.ToLower()) || h.Model.ToLower().Contains(keyword.ToLower())).ToDictionary(h => h.HouseID, h => h);
-            housesCard(filteredHouses.Values);
+            HousesCard(filteredHouses.Values);
 
             var agentsList = Datasource.GetAllAgents();
             var agents = agentsList.Agents;
             var filteredAgents = agents.Where(a => a.FirstName.ToLower().Contains(keyword.ToLower()) || a.LastName.ToLower().Contains(keyword.ToLower()) || a.City.ToLower().Contains(keyword.ToLower())).ToDictionary(a => a.AgentID, a => a);
-            agentCard(filteredAgents.Values);
+            AgentCard(filteredAgents.Values);
         }
-
-
-
-
     }
 }

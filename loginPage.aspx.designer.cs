@@ -11,7 +11,7 @@ namespace RemaxWebsite
 {
 
 
-    public partial class index
+    public partial class loginPage
     {
 
         /// <summary>
@@ -24,57 +24,48 @@ namespace RemaxWebsite
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl connectedUser;
 
         /// <summary>
-        /// Form1 control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm Form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// search_form control.
+        /// TXT_Email control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl search_form;
+        protected global::System.Web.UI.WebControls.TextBox TXT_Email;
 
         /// <summary>
-        /// mainFilters control.
+        /// TXT_Password control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mainFilters;
+        protected global::System.Web.UI.WebControls.TextBox TXT_Password;
 
         /// <summary>
-        /// filter_properties control.
+        /// BTN_SignIn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button filter_properties;
+        protected global::System.Web.UI.WebControls.Button BTN_SignIn;
 
         /// <summary>
-        /// filter_agents control.
+        /// ErrorLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button filter_agents;
-
-        /// <summary>
-        /// mainResults control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mainResults;
+        protected global::System.Web.UI.WebControls.Label ErrorLabel;
     }
 }

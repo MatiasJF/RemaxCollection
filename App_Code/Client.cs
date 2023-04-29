@@ -19,7 +19,7 @@ namespace RemaxWebsite
         protected string _FirstName;
         protected string _LastName;
         protected string _Email;
-        protected string _Nip;
+        protected string _Password;
         protected string _Phone;
         //--typeof CLient test
         protected bool _isSeller;
@@ -33,24 +33,28 @@ namespace RemaxWebsite
             this._FirstName =
             this._LastName =
             this._Email =
-            this._Nip =
-            this._Phone 
+            this._Password =
+            this._Phone
             = "n/a";
 
             this._Houses = new HousesList();
         }
 
-        public Client(string ClientID)
+        public Client
+        (
+             string FirstName,
+             string LastName,
+             string Email,
+             string Password,
+             string Phone
+        )
         {
-            this._id = ClientID;
-            this._FirstName =
-            this._LastName =
-            this._Email =
-            this._Nip =
-            this._Phone
-            = "n/a";
 
-            this._Houses = new HousesList();
+            this._FirstName = FirstName;
+            this._LastName = LastName;
+            this._Email = Email;
+            this._Password = Password;
+            this._Phone = Phone;
         }
 
         public Client
@@ -59,7 +63,7 @@ namespace RemaxWebsite
             string FirstName,
             string LastName,
             string Email,
-            string Nip,
+            string Password,
             string Phone,
             HousesList Houses
             )
@@ -68,7 +72,7 @@ namespace RemaxWebsite
             this._FirstName = FirstName;
             this._LastName = LastName;
             this._Email = Email;
-            this._Nip = Nip;
+            this._Password = Password;
             this._Phone = Phone;
             this._Houses = Houses;
         }
@@ -79,7 +83,7 @@ namespace RemaxWebsite
             string FirstName,
             string LastName,
             string Email,
-            string Nip,
+            string Password,
             string Phone
             )
         {
@@ -87,7 +91,7 @@ namespace RemaxWebsite
             this._FirstName = FirstName;
             this._LastName = LastName;
             this._Email = Email;
-            this._Nip = Nip;
+            this._Password = Password;
             this._Phone = Phone;
             this._Houses = new HousesList();
         }
@@ -96,7 +100,7 @@ namespace RemaxWebsite
         public String ClientID
         {
             get => this._id;
-        } 
+        }
 
         public String FirstName
         {
@@ -116,22 +120,22 @@ namespace RemaxWebsite
             set => this._Email = value;
         }
 
-        public String Nip
+        public String Password
         {
-            get => this._Nip; 
-            set => this._Nip = value;
+            get => this._Password;
+            set => this._Password = value;
         }
 
         public String Phone
         {
-            get => this._Phone; 
+            get => this._Phone;
             set => this._Phone = value;
         }
 
-        public HousesList Houses 
+        public HousesList Houses
         {
-         get => this._Houses; 
-         set => this._Houses = value;
+            get => this._Houses;
+            set => this._Houses = value;
         }
 
         public void Subscribe
@@ -140,7 +144,7 @@ namespace RemaxWebsite
             string FirstName,
             string LastName,
             string Email,
-            string Nip,
+            string Password,
             string Phone
             )
         {
@@ -148,7 +152,7 @@ namespace RemaxWebsite
             this._FirstName = FirstName;
             this._LastName = LastName;
             this._Email = Email;
-            this._Nip = Nip;
+            this._Password = Password;
             this._Phone = Phone;
             this._Houses = Houses;
         }
@@ -172,7 +176,7 @@ namespace RemaxWebsite
             ClientInfo += $"FirstName        : {this._FirstName}" + nextLine;
             ClientInfo += $"LastName         : {this._LastName}" + nextLine;
             ClientInfo += $"Email            : {this._Email}" + nextLine;
-            ClientInfo += $"Phone            : {this._Phone}"+ nextLine;
+            ClientInfo += $"Phone            : {this._Phone}" + nextLine;
             ClientInfo += $"Buyer            : {this._isBuyer}" + nextLine;
             ClientInfo += $"Seller           : {this._isSeller}" + nextLine;
             ClientInfo += $"Maisons du client:  " + nextLine;

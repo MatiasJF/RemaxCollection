@@ -11,7 +11,7 @@ namespace RemaxWebsite
 {
 
 
-    public partial class index
+    public partial class signUpPage
     {
 
         /// <summary>
@@ -24,57 +24,66 @@ namespace RemaxWebsite
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl connectedUser;
 
         /// <summary>
-        /// Form1 control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm Form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// search_form control.
+        /// TXT_FirstName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl search_form;
+        protected global::System.Web.UI.WebControls.TextBox TXT_FirstName;
 
         /// <summary>
-        /// mainFilters control.
+        /// TXT_LastName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mainFilters;
+        protected global::System.Web.UI.WebControls.TextBox TXT_LastName;
 
         /// <summary>
-        /// filter_properties control.
+        /// TXT_Email control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button filter_properties;
+        protected global::System.Web.UI.WebControls.TextBox TXT_Email;
 
         /// <summary>
-        /// filter_agents control.
+        /// TXT_Password control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button filter_agents;
+        protected global::System.Web.UI.WebControls.TextBox TXT_Password;
 
         /// <summary>
-        /// mainResults control.
+        /// TXT_Phone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl mainResults;
+        protected global::System.Web.UI.WebControls.TextBox TXT_Phone;
+
+        /// <summary>
+        /// BTN_SignUp control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button BTN_SignUp;
     }
 }

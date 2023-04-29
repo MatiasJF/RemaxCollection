@@ -76,13 +76,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="agentLogin.aspx" />
     <Content Include="Assets\icons8-remax-16.png" />
     <Content Include="Assets\rmx_logo.png" />
     <Content Include="index.aspx" />
+    <Content Include="loginPage.aspx" />
+    <Content Include="signUpPage.aspx" />
     <Content Include="style.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="agentLogin.aspx.cs">
+      <DependentUpon>agentLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="agentLogin.aspx.designer.cs">
+      <DependentUpon>agentLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Code\Agent.cs" />
     <Compile Include="App_Code\AgentsList.cs" />
     <Compile Include="App_Code\Client.cs" />
@@ -98,7 +108,21 @@
     <Compile Include="index.aspx.designer.cs">
       <DependentUpon>index.aspx</DependentUpon>
     </Compile>
+    <Compile Include="loginPage.aspx.cs">
+      <DependentUpon>loginPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="loginPage.aspx.designer.cs">
+      <DependentUpon>loginPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="signUpPage.aspx.cs">
+      <DependentUpon>signUpPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="signUpPage.aspx.designer.cs">
+      <DependentUpon>signUpPage.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
