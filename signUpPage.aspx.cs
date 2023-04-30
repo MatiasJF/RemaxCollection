@@ -18,7 +18,7 @@ namespace RemaxWebsite
         protected void CheckUserConnected()
         {
             string connectedUserValid = (Session["connectedUser"] != null && !string.IsNullOrEmpty(Session["connectedUser"].ToString()))
-                ? Session["connectedUser"].ToString()
+                ? Session["connectedUserName"].ToString()
                 : "sign in";
             connectedUser.Controls.Add(new LiteralControl(connectedUserValid));
         }

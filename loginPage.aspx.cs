@@ -21,7 +21,7 @@ namespace RemaxWebsite
         protected void CheckUserConnected()
         {
             string connectedUserValid = (Session["connectedUser"] != null && !string.IsNullOrEmpty(Session["connectedUser"].ToString()))
-                ? Session["connectedUser"].ToString()
+                ? Session["connectedUserName"].ToString()
                 : "sign in";
             connectedUser.Controls.Add(new LiteralControl(connectedUserValid));
 
@@ -43,7 +43,11 @@ namespace RemaxWebsite
             {
                 // User login successful, perform further actions or redirect to another page
                 // and initialise connectedUser on session
+                string firstName = Datasource.GetClientNameByEmail(email)["FirstName"].ToString();
+                string lastName = Datasource.GetClientNameByEmail(email)["LastName"].ToString();
+
                 Session["connectedUser"] = Datasource.GetClientNameByEmail(email);
+                Session["connectedUserName"] = firstName + " " + lastName;
                 Response.Redirect("index.aspx");
             }
             else

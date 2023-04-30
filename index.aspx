@@ -90,10 +90,11 @@
             </section>
         </main>
     </form>
-    <footer>
-        MatanDessaur&copy;<span id="year"></span>
-        <script>document.getElementById("year").innerHTML = new Date().getFullYear();</script>
-    </footer>
+        <a href='./communication.aspx' class="btn" style="position: fixed; padding: 0.4em !important; right: 35px; bottom: 35px;">
+            <svg width="22" height="22" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.75 21.75A.75.75 0 0 1 6 21v-3H4.875A3.379 3.379 0 0 1 1.5 14.625v-9A3.379 3.379 0 0 1 4.875 2.25h14.25A3.379 3.379 0 0 1 22.5 5.625v9A3.379 3.379 0 0 1 19.125 18h-7.606L7.23 21.576a.752.752 0 0 1-.48.174Z"></path>
+            </svg>
+        </a>
 
     <script type="text/javascript">
         // Script to call the disconnect method

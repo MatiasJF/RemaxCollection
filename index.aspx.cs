@@ -30,7 +30,7 @@ namespace RemaxWebsite
         {
             if (Session["connectedUser"] != null && !string.IsNullOrEmpty(Session["connectedUser"].ToString()))
             {
-                string connectedUserName = Session["connectedUser"].ToString();
+                string connectedUserName = Session["connectedUserName"].ToString();
 
                 // Create an anchor element with the onclick attribute set to call the confirmDisconnect function
                 HtmlGenericControl anchor = new HtmlGenericControl("a");

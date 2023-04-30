@@ -95,8 +95,7 @@ li {
     --blue: #1255dc;
 
     --header-height: 80px;
-    --foot-height: 40px;
-    --main-height: calc(100svh - (var(--header-height) + var(--foot-height)));
+    --main-height: calc(100svh - var(--header-height));
 }
 
 /* -------- </ ROOT Variables > --------- */
@@ -369,6 +368,11 @@ div.grp-btn {
     border-radius: 15px;
     backdrop-filter: blur(8px);
     text-align:center;
+}
+
+a.btn chat-btn {
+    position: absolute;
+    padding: 0.4em !important;
 }
 
 .btn:hover {

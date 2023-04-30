@@ -30,11 +30,12 @@
         </nav>
     </header>
     <section class="communication_layout">
-        <aside>
-
+        <aside runat="server" id="Messages">
+            <!-- FILLED ON SERVER -->
         </aside>
         <main>
              <form id="Form1" runat="server">
+                <iframe id="communicationIframe" frameborder="0" runat="server"></iframe>
                 <!-- Hidden button to be called by the disconnect script -->
                 <asp:Button ID="btnLogout" runat="server" OnClick="btnLogout_Click" Style="display: none;" />
              </form>
@@ -46,7 +47,11 @@
             if (window.confirm("Are you sure you want to disconnect?")) {
                 document.getElementById("<%= btnLogout.ClientID %>").click();
             }
-        }
+         }
+         // Function to update the iframe source when a message thumbnail is clicked
+         function handleMessageClick(messageId) {
+             document.getElementById("communicationIframe").src = "message.aspx?id=" + messageId;
+         }
      </script>
 </body>
 </html>

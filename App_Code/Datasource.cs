@@ -214,11 +214,11 @@ namespace RemaxWebsite
         }
 
         // Searches the client by the email
-        public static string GetClientNameByEmail(string email)
+        public static DataRow GetClientNameByEmail(string email)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT FirstName, LastName FROM Client WHERE Email = @Email";
+                string query = "SELECT * FROM Client WHERE Email = @Email";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 adapter.SelectCommand.Parameters.AddWithValue("@Email", email);
 
@@ -230,10 +230,7 @@ namespace RemaxWebsite
 
                 if (row != null)
                 {
-                    string firstName = row["FirstName"].ToString();
-                    string lastName = row["LastName"].ToString();
-
-                    return firstName + " " + lastName;
+                    return row;
                 }
 
                 return null;
@@ -241,11 +238,11 @@ namespace RemaxWebsite
         }
 
         // Searches the agent by the email
-        public static string GetAgentNameByEmail(string email)
+        public static DataRow GetAgentNameByEmail(string email)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "SELECT FirstName, LastName FROM Agent WHERE Email = @Email";
+                string query = "SELECT * FROM Agent WHERE Email = @Email";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 adapter.SelectCommand.Parameters.AddWithValue("@Email", email);
 
@@ -257,10 +254,7 @@ namespace RemaxWebsite
 
                 if (row != null)
                 {
-                    string firstName = row["FirstName"].ToString();
-                    string lastName = row["LastName"].ToString();
-
-                    return firstName + " " + lastName;
+                    return row;
                 }
 
                 return null;
@@ -387,5 +381,80 @@ namespace RemaxWebsite
                 return count > 0;
             }
         }
+
+
+        // Add a message
+        public static void AddMessage(int clientID, int agentID, string content)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "INSERT INTO Communication (ClientID, AgentID, Content) VALUES (@ClientID, @AgentID, @Content)";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ClientID", clientID);
+                command.Parameters.AddWithValue("@AgentID", agentID);
+                command.Parameters.AddWithValue("@Content", content);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        // Get all messages where UserID is AgentID or ClientID
+        public static DataTable GetAllMessages(int clientID, int agentID)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT c.[MessageID], c.[Content], c.[DateSent], c.[Status],
+                (CASE WHEN c.[ClientID] = @ClientID THEN a.FirstName + ' ' + a.LastName
+                      ELSE cl.FirstName + ' ' + cl.LastName END) AS SenderName
+            FROM [Communication] c
+            LEFT JOIN [Client] cl ON c.[ClientID] = cl.[_id]
+            LEFT JOIN [Agent] a ON c.[AgentID] = a.[_id]
+            WHERE c.[ClientID] = @ClientID AND c.[AgentID] = @AgentID
+            ORDER BY c.[DateSent]";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@ClientID", clientID);
+                command.Parameters.AddWithValue("@AgentID", agentID);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                DataTable messages = new DataTable();
+                adapter.Fill(messages);
+
+                return messages;
+            }
+        }
+
+
+        public static DataTable GetLatestMessages(int userID, bool isAgent)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = $@"
+            WITH MessageSender AS (
+                SELECT c.[MessageID], c.[Content], c.[DateSent], c.[Status],
+                    {(isAgent ? "cl.FirstName + ' ' + cl.LastName" : "a.FirstName + ' ' + a.LastName")} AS SenderName,
+                    ROW_NUMBER() OVER (PARTITION BY {(isAgent ? "c.[ClientID]" : "c.[AgentID]")} ORDER BY c.[DateSent] DESC) AS RowNum
+                FROM [Communication] c
+                LEFT JOIN [Client] cl ON c.[ClientID] = cl.[_id]
+                LEFT JOIN [Agent] a ON c.[AgentID] = a.[_id]
+                WHERE {(isAgent ? "c.[AgentID]" : "c.[ClientID]")} = @UserID
+            )
+            SELECT * FROM MessageSender WHERE RowNum = 1";
+
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@UserID", userID);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                DataTable messages = new DataTable();
+                adapter.Fill(messages);
+
+                return messages;
+            }
+        }
+
+
+
     }
 }

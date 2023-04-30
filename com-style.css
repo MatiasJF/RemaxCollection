@@ -11,10 +11,39 @@ aside, main {
     overflow-y: scroll;
 }
 
-aside{
+iframe#communicationIframe {
+    height: calc(100svh - 80px);
+    width: 100%;
+}
+
+aside {
     width: 25%;
 }
 
 main {
     width: 75%;
 }
+
+.message-card {
+    border-bottom: 1px solid #ccc;
+    padding: 15px;
+    border-collapse: collapse;
+    cursor: pointer;
+}
+
+    .message-card:hover {
+        background-color: #f5f5f5;
+    }
+
+.message-header,
+.message-footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.message-id,
+.message-date,
+.message-status {
+    font-weight: bold;
+}
+
