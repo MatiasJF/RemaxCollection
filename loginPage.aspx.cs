@@ -24,6 +24,11 @@ namespace RemaxWebsite
                 ? Session["connectedUser"].ToString()
                 : "sign in";
             connectedUser.Controls.Add(new LiteralControl(connectedUserValid));
+
+            if (Session["connectedUser"] != null && !string.IsNullOrEmpty(Session["connectedUser"].ToString()))
+            {
+                Response.Redirect("./index.aspx");
+            }
         }
 
         protected void BTN_Login_Click(object sender, EventArgs e)
@@ -32,7 +37,7 @@ namespace RemaxWebsite
             string password = TXT_Password.Text;
 
             // Call the login method from Datasource to check the user credentials
-            bool loginSuccessful = Datasource.LoginUser(email, password);
+            bool loginSuccessful = Datasource.LoginClient(email, password);
 
             if (loginSuccessful)
             {

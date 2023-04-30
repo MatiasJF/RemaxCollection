@@ -1,0 +1,20 @@
+﻿section.communication_layout {
+    display: flex;
+    flex-direction: row;
+    height: calc(100svh - 80px);
+    width: inherit;
+}
+
+aside, main {
+    height: inherit;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+aside{
+    width: 25%;
+}
+
+main {
+    width: 75%;
+}

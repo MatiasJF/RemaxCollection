@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <link href="./Assets/icons8-remax-16.png" rel="icon" type="image/x-icon" />
     <title>RE/MAX&nbsp;•&nbsp;Sign in</title>
     <link rel="stylesheet" href="style.css" />
       <style>
@@ -13,10 +14,10 @@
 <body>
     <header>
         <nav>
-            <a href="">
+            <a href="./index.aspx">
                 <img src="./Assets/rmx_logo.png" alt="Remax|Logo" />
             </a>
-            <a href="">
+            <a href="./loginPage.aspx">
                 <i class="user-icon">
                     <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 3.75a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z"></path>
@@ -43,7 +44,7 @@
                 <asp:Button runat="server" ID="BTN_SignIn" Text="Sign in" OnClick="BTN_Login_Click" />
             </form>
             <div class="form-section">
-                <p>Have an account? <a href="./signUpPage.aspx">Sign up</a> </p>
+                <p>Don't have an account? <a href="./signUpPage.aspx">Sign up</a> </p>
                 <p>Remax agent? <a href="./agentLogin.aspx">Agent Login</a> </p>
                 <asp:Label runat="server" ID="ErrorLabel" ForeColor="Red" />
             </div>

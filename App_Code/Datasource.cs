@@ -12,17 +12,20 @@ namespace RemaxWebsite
         public static string connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=RemaxDatabase;Integrated Security=True";
         public static DataSet dataSet = new DataSet();
 
+        // Gets all the company agents
         public static AgentsList GetAllAgents()
         {
+            // Initialize Agent list
             AgentsList agentList = new AgentsList();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // Select all the agents from the database
                 string query = "SELECT * FROM Agent";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-
                 adapter.Fill(dataSet, "Agent");
 
+                // Build the agents lists
                 foreach (DataRow row in dataSet.Tables["Agent"].Rows)
                 {
                     string AgentID = row["_id"].ToString();
@@ -39,21 +42,22 @@ namespace RemaxWebsite
                     agentList.Add(agent);
                 }
             }
-
             return agentList;
         }
 
         public static ClientsList GetAgentClients(string AgentID)
         {
+            // Initialize Client list
             ClientsList clientsList = new ClientsList();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // Select all the clients from an agent from the database
                 string query = $"SELECT * FROM Client WHERE refAgent = '{AgentID}'";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-
                 adapter.Fill(dataSet, "Client");
 
+                // Build the agent's clients list
                 foreach (DataRow row in dataSet.Tables["Client"].Rows)
                 {
                     string ClientID = row["_id"].ToString();
@@ -67,22 +71,23 @@ namespace RemaxWebsite
                     clientsList.Add(client);
                 }
             }
-
             return clientsList;
         }
 
 
         public static HousesList GetClientHouses(string ClientID)
         {
+            // Initialize Client list
             HousesList housesList = new HousesList();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // Select all the houses from a client from the database
                 string query = $"SELECT * FROM House WHERE refClient = '{ClientID}'";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-
                 adapter.Fill(dataSet, "House");
 
+                // Build the client's houses list
                 foreach (DataRow row in dataSet.Tables["House"].Rows)
                 {
                     string Number = row["Number"].ToString();
@@ -100,55 +105,23 @@ namespace RemaxWebsite
                     housesList.Add(house);
                 }
             }
-
             return housesList;
         }
+
 
         public static HousesList GetAllHouses()
         {
+            // Initialize Houses list
             HousesList housesList = new HousesList();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // Select all the houses from the database
                 string query = "SELECT * FROM House";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-
                 adapter.Fill(dataSet, "House");
 
-                foreach (DataRow row in dataSet.Tables["House"].Rows)
-                {
-                    string Number = row["_id"].ToString();
-                    string CivicNumber = row["Address"].ToString();
-                    string Type = row["Type"].ToString();
-                    string Model = row["Model"].ToString();
-                    string Country = row["Country"].ToString();
-                    string Province = row["Province"].ToString();
-                    string City = row["City"].ToString();
-                    string PostalCode = row["PostalCode"].ToString();
-                    string Image = row["Image"].ToString();
-                    Decimal CurrentPrice = Convert.ToDecimal(row["Price"]);
-
-                    House house = new House(Number, CivicNumber, Type, Model, Country, Province, City, PostalCode,Image, CurrentPrice);
-                    housesList.Add(house);
-                }
-            }
-
-            return housesList;
-        }
-
-        public static HousesList GetHousesByParam(string col, string filter)
-        {
-            HousesList housesList = new HousesList();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string query = $"SELECT * FROM House WHERE {col} = @filter";
-                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
-                adapter.SelectCommand.Parameters.AddWithValue("@filter", filter);
-
-                DataSet dataSet = new DataSet();
-                adapter.Fill(dataSet, "House");
-
+                // Build the houses list
                 foreach (DataRow row in dataSet.Tables["House"].Rows)
                 {
                     string Number = row["_id"].ToString();
@@ -166,16 +139,53 @@ namespace RemaxWebsite
                     housesList.Add(house);
                 }
             }
+            return housesList;
+        }
 
+        public static HousesList GetHousesByParam(string col, string filter)
+        {
+            // Initialize Houses list
+            HousesList housesList = new HousesList();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                // Select houses from the database with params
+                string query = $"SELECT * FROM House WHERE {col} = @filter";
+                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                adapter.SelectCommand.Parameters.AddWithValue("@filter", filter);
+
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet, "House");
+
+                // Build the houses list filtered by params
+                foreach (DataRow row in dataSet.Tables["House"].Rows)
+                {
+                    string Number = row["_id"].ToString();
+                    string CivicNumber = row["Address"].ToString();
+                    string Type = row["Type"].ToString();
+                    string Model = row["Model"].ToString();
+                    string Country = row["Country"].ToString();
+                    string Province = row["Province"].ToString();
+                    string City = row["City"].ToString();
+                    string PostalCode = row["PostalCode"].ToString();
+                    string Image = row["Image"].ToString();
+                    Decimal CurrentPrice = Convert.ToDecimal(row["Price"]);
+
+                    House house = new House(Number, CivicNumber, Type, Model, Country, Province, City, PostalCode, Image, CurrentPrice);
+                    housesList.Add(house);
+                }
+            }
             return housesList;
         }
 
         public static AgentsList GetAgentsByParam(string col, string filter)
         {
+            // Initialize Agents list
             AgentsList agentsList = new AgentsList();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
+                // Select agents from the database with params
                 string query = $"SELECT * FROM Agent WHERE {col} = @filter";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
                 adapter.SelectCommand.Parameters.AddWithValue("@filter", filter);
@@ -183,6 +193,7 @@ namespace RemaxWebsite
                 DataSet dataSet = new DataSet();
                 adapter.Fill(dataSet, "Agent");
 
+                // Build the agents list filtered by params
                 foreach (DataRow row in dataSet.Tables["Agent"].Rows)
                 {
                     string _id = row["_id"].ToString();
@@ -199,26 +210,28 @@ namespace RemaxWebsite
                     agentsList.Add(agent);
                 }
             }
-
             return agentsList;
         }
 
+        // Searches the client by the email
         public static string GetClientNameByEmail(string email)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT FirstName, LastName FROM Client WHERE Email = @Email";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Email", email);
+                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                adapter.SelectCommand.Parameters.AddWithValue("@Email", email);
 
-                connection.Open();
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet, "Client");
 
-                SqlDataReader reader = command.ExecuteReader();
+                DataTable dataTable = dataSet.Tables["Client"];
+                DataRow row = dataTable.Rows.Cast<DataRow>().FirstOrDefault();
 
-                if (reader.Read())
+                if (row != null)
                 {
-                    string firstName = reader["FirstName"].ToString();
-                    string lastName = reader["LastName"].ToString();
+                    string firstName = row["FirstName"].ToString();
+                    string lastName = row["LastName"].ToString();
 
                     return firstName + " " + lastName;
                 }
@@ -227,22 +240,25 @@ namespace RemaxWebsite
             }
         }
 
+        // Searches the agent by the email
         public static string GetAgentNameByEmail(string email)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "SELECT FirstName, LastName FROM Agent WHERE Email = @Email";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Email", email);
+                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                adapter.SelectCommand.Parameters.AddWithValue("@Email", email);
 
-                connection.Open();
+                DataSet dataSet = new DataSet();
+                adapter.Fill(dataSet, "Agent");
 
-                SqlDataReader reader = command.ExecuteReader();
+                DataTable dataTable = dataSet.Tables["Agent"];
+                DataRow row = dataTable.Rows.Cast<DataRow>().FirstOrDefault();
 
-                if (reader.Read())
+                if (row != null)
                 {
-                    string firstName = reader["FirstName"].ToString();
-                    string lastName = reader["LastName"].ToString();
+                    string firstName = row["FirstName"].ToString();
+                    string lastName = row["LastName"].ToString();
 
                     return firstName + " " + lastName;
                 }
@@ -251,11 +267,15 @@ namespace RemaxWebsite
             }
         }
 
-
-
-
-        public static void AddUser(Client user)
+        // Add Client to database
+        public static bool AddClient(Client user)
         {
+            // Check if user already exists
+            if (ClientExists(user.Email))
+            {
+                return false;
+            }
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "INSERT INTO Client (FirstName, LastName, Email, Password, Phone) VALUES (@FirstName, @LastName, @Email, @Password, @Phone)";
@@ -269,10 +289,17 @@ namespace RemaxWebsite
                 connection.Open();
                 command.ExecuteNonQuery();
             }
+            return true;
         }
 
-        public static void AddAgent(Agent agent)
+        // Add Agent to database
+        public static bool AddAgent(Agent agent)
         {
+            // Check if user already exists
+            if (AgentExists(agent.Email))
+            {
+                return false;
+            }
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = "INSERT INTO Agent (FirstName, LastName, Email, Nip, Phone, Address, City, Image) " +
@@ -290,11 +317,12 @@ namespace RemaxWebsite
                 connection.Open();
                 command.ExecuteNonQuery();
             }
+            return true;
         }
 
 
-
-        public static bool LoginUser(string email, string password)
+        // Login Client
+        public static bool LoginClient(string email, string password)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -310,6 +338,7 @@ namespace RemaxWebsite
             }
         }
 
+        // Login Agent
         public static bool AgentLogin(string email, string password)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -327,8 +356,36 @@ namespace RemaxWebsite
             }
         }
 
+        // Search if client exists
+        public static bool ClientExists(string email)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Client WHERE Email = @Email";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
 
+                connection.Open();
+                int count = (int)command.ExecuteScalar();
 
+                return count > 0;
+            }
+        }
 
+        // Search if agent exists
+        public static bool AgentExists(string email)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Agent WHERE Email = @Email";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Email", email);
+
+                connection.Open();
+                int count = (int)command.ExecuteScalar();
+
+                return count > 0;
+            }
+        }
     }
 }

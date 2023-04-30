@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Web.Routing;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using RemaxWebsite;
 
@@ -27,11 +28,24 @@ namespace RemaxWebsite
         //Checks if user is connected in Session. if it is the case display the user's name
         protected void CheckUserConnected()
         {
-            string connectedUserValid = (Session["connectedUser"] != null && !string.IsNullOrEmpty(Session["connectedUser"].ToString()))
-                ? Session["connectedUser"].ToString()
-                : "sign in";
-            connectedUser.Controls.Add(new LiteralControl(connectedUserValid));
+            if (Session["connectedUser"] != null && !string.IsNullOrEmpty(Session["connectedUser"].ToString()))
+            {
+                string connectedUserName = Session["connectedUser"].ToString();
+
+                // Create an anchor element with the onclick attribute set to call the confirmDisconnect function
+                HtmlGenericControl anchor = new HtmlGenericControl("a");
+                anchor.Attributes.Add("href", "#");
+                anchor.Attributes.Add("onclick", "confirmDisconnect();");
+                anchor.InnerText = connectedUserName;
+
+                connectedUser.Controls.Add(anchor);
+            }
+            else
+            {
+                connectedUser.Controls.Add(new LiteralControl("sign in"));
+            }
         }
+
 
         // Process the request query depending on the clicked filter or entered keyword
         // Shows the filtered results if any
@@ -161,7 +175,7 @@ namespace RemaxWebsite
                                 <p class='address'>{agent.Address}</p>
                             </div>
                             <div class='agent-contact'>
-                                <button class='btn' id='{agent.AgentID}_msg' class='agent-message'>Message</button>
+                                <a href='./communication.aspx?contact={agent.AgentID}' class='btn' id='{agent.AgentID}_msg' class='agent-message'>Message</a>
                                 <button class='btn' class='agent-phone' disabled>{agent.Phone}</button>
                             </div>
                         </div>
@@ -200,5 +214,13 @@ namespace RemaxWebsite
             var filteredAgents = agents.Where(a => a.FirstName.ToLower().Contains(keyword.ToLower()) || a.LastName.ToLower().Contains(keyword.ToLower()) || a.City.ToLower().Contains(keyword.ToLower())).ToDictionary(a => a.AgentID, a => a);
             AgentCard(filteredAgents.Values);
         }
+
+        // Logout
+        protected void btnLogout_Click(object sender, EventArgs e)
+        {
+            Session["connectedUser"] = null;
+            Response.Redirect(Request.RawUrl); // Refresh the current page
+        }
+
     }
 }

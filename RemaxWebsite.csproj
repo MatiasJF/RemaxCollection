@@ -62,6 +62,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -79,6 +80,8 @@
     <Content Include="agentLogin.aspx" />
     <Content Include="Assets\icons8-remax-16.png" />
     <Content Include="Assets\rmx_logo.png" />
+    <Content Include="com-style.css" />
+    <Content Include="communication.aspx" />
     <Content Include="index.aspx" />
     <Content Include="loginPage.aspx" />
     <Content Include="signUpPage.aspx" />
@@ -101,6 +104,13 @@
     <Compile Include="App_Code\Datasource.cs" />
     <Compile Include="App_Code\House.cs" />
     <Compile Include="App_Code\HousesList.cs" />
+    <Compile Include="communication.aspx.cs">
+      <DependentUpon>communication.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="communication.aspx.designer.cs">
+      <DependentUpon>communication.aspx</DependentUpon>
+    </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

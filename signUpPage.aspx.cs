@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Windows.Forms;
 
 namespace RemaxWebsite
 {
@@ -37,12 +33,27 @@ namespace RemaxWebsite
 
             Client user = new Client(firstName,lastName,email,password,phone);
 
-            // Call the AddUser method from Datasource to add the user to the database
-            Datasource.AddUser(user);
+            // Call the AddClient method from Datasource to add the user to the database
+            bool userAdded = Datasource.AddClient(user);
 
-            // Optionally, you can perform additional actions or redirect to another page after successful user creation.
-            // For example, redirecting to a success page:
-            Response.Redirect("loginPage.aspx");
+            // Show MessageBox based on the result
+            if (!userAdded)
+            {
+                TXT_FirstName.Text =
+                TXT_LastName.Text =
+                TXT_Email.Text =
+                TXT_Password.Text =
+                TXT_Phone.Text =
+                string.Empty;
+
+                ErrorLabel.Text = "User with the same email already exists.";
+            }
+            else
+            {
+                // Optionally, you can perform additional actions or redirect to another page after successful user creation.
+                // For example, redirecting to a success page:
+                Response.Redirect("loginPage.aspx");
+            }
         }
 
     }
