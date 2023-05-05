@@ -384,20 +384,34 @@ namespace RemaxWebsite
 
 
         // Add a message
-        public static void AddMessage(int clientID, int agentID, string content)
+        public static void AddMessage(int clientID, int agentID, string content, bool isAgent)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                string query = "INSERT INTO Communication (ClientID, AgentID, Content) VALUES (@ClientID, @AgentID, @Content)";
+                string query;
+
+                if (isAgent)
+                {
+                    query = "INSERT INTO Communication (ClientID, AgentID, Content, IsAgent) VALUES (@AgentID, @ClientID, @Content, @IsAgent)";
+                }
+                else
+                {
+                    query = "INSERT INTO Communication (ClientID, AgentID, Content, IsAgent) VALUES (@ClientID, @AgentID, @Content, @IsAgent)";
+                }
+
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@ClientID", clientID);
                 command.Parameters.AddWithValue("@AgentID", agentID);
                 command.Parameters.AddWithValue("@Content", content);
+                command.Parameters.AddWithValue("@IsAgent", isAgent);
 
                 connection.Open();
                 command.ExecuteNonQuery();
             }
         }
+
+
+
 
         // Get all messages where UserID is AgentID or ClientID
         public static DataTable GetAllMessages(int clientID, int agentID)
@@ -405,14 +419,16 @@ namespace RemaxWebsite
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = @"
-            SELECT c.[MessageID], c.[Content], c.[DateSent], c.[Status],
-                (CASE WHEN c.[ClientID] = @ClientID THEN a.FirstName + ' ' + a.LastName
-                      ELSE cl.FirstName + ' ' + cl.LastName END) AS SenderName
+            SELECT c.[MessageID], c.[Content], c.[DateSent], c.[Status], c.[isAgent],
+                (CASE WHEN c.[isAgent] = 1 THEN cl.FirstName + ' ' + cl.LastName
+                      ELSE a.FirstName + ' ' + a.LastName END) AS SenderName
             FROM [Communication] c
             LEFT JOIN [Client] cl ON c.[ClientID] = cl.[_id]
             LEFT JOIN [Agent] a ON c.[AgentID] = a.[_id]
-            WHERE c.[ClientID] = @ClientID AND c.[AgentID] = @AgentID
+            WHERE (c.[ClientID] = @ClientID AND c.[AgentID] = @AgentID)
+                OR (c.[AgentID] = @ClientID AND c.[ClientID] = @AgentID)
             ORDER BY c.[DateSent]";
+
 
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@ClientID", clientID);
@@ -432,16 +448,16 @@ namespace RemaxWebsite
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 string query = $@"
-            WITH MessageSender AS (
-                SELECT c.[MessageID], c.[Content], c.[DateSent], c.[Status],
-                    {(isAgent ? "cl.FirstName + ' ' + cl.LastName" : "a.FirstName + ' ' + a.LastName")} AS SenderName,
-                    ROW_NUMBER() OVER (PARTITION BY {(isAgent ? "c.[ClientID]" : "c.[AgentID]")} ORDER BY c.[DateSent] DESC) AS RowNum
-                FROM [Communication] c
-                LEFT JOIN [Client] cl ON c.[ClientID] = cl.[_id]
-                LEFT JOIN [Agent] a ON c.[AgentID] = a.[_id]
-                WHERE {(isAgent ? "c.[AgentID]" : "c.[ClientID]")} = @UserID
-            )
-            SELECT * FROM MessageSender WHERE RowNum = 1";
+    WITH MessageSender AS (
+        SELECT c.[MessageID], c.[Content], c.[DateSent], c.[Status], c.[isAgent], c.[ClientId], c.[AgentID],
+            {(isAgent ? "cl.FirstName + ' ' + cl.LastName" : "a.FirstName + ' ' + a.LastName")} AS SenderName,
+            ROW_NUMBER() OVER (PARTITION BY {(isAgent ? "c.[ClientID]" : "c.[AgentId]")} ORDER BY c.[DateSent] DESC) AS RowNum
+        FROM [Communication] c
+        LEFT JOIN [Client] cl ON c.[ClientID] = cl.[_id]
+        LEFT JOIN [Agent] a ON c.[AgentID] = a.[_id]
+        WHERE {(isAgent ? "c.[AgentID]" : "c.[ClientID]")} = @UserID
+    )
+    SELECT * FROM MessageSender WHERE RowNum = 1";
 
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@UserID", userID);
@@ -452,6 +468,60 @@ namespace RemaxWebsite
 
                 return messages;
             }
+        }
+
+        public static void LoadMessageData()
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Message";
+                SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                adapter.Fill(dataSet, "Message");
+            }
+        }
+
+        public static int GetClientIDFromMessage(int messageID)
+        {
+            if (dataSet != null && dataSet.Tables.Contains("Message"))
+            {
+                DataRow[] messages = dataSet.Tables["Message"].Select($"MessageID = {messageID}");
+
+                if (messages.Length > 0)
+                {
+                    DataRow messageRow = messages[0];
+                    bool isAgent = Convert.ToBoolean(messageRow["isAgent"]);
+
+                    if (isAgent)
+                    {
+                        return Convert.ToInt32(messageRow["ClientID"]);
+                    }
+                }
+            }
+
+            return -1; // Default value if client ID is not found or an error occurs
+        }
+
+
+
+        public static int GetAgentIDFromMessage(int messageID)
+        {
+            if (dataSet != null && dataSet.Tables.Contains("Message"))
+            {
+                DataRow[] messages = dataSet.Tables["Message"].Select($"MessageID = {messageID}");
+
+                if (messages.Length > 0)
+                {
+                    DataRow messageRow = messages[0];
+                    bool isAgent = Convert.ToBoolean(messageRow["isAgent"]);
+
+                    if (!isAgent)
+                    {
+                        return Convert.ToInt32(messageRow["AgentID"]);
+                    }
+                }
+            }
+
+            return -1; // Default value if agent ID is not found or an error occurs
         }
 
 

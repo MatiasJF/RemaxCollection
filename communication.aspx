@@ -49,8 +49,8 @@
             }
          }
          // Function to update the iframe source when a message thumbnail is clicked
-         function handleMessageClick(messageId) {
-             document.getElementById("communicationIframe").src = "message.aspx?id=" + messageId;
+         function handleMessageClick(messageId, contactId) {
+             document.getElementById("communicationIframe").src = "message.aspx?id=" + messageId + "&contact=" + contactId;
          }
      </script>
 </body>

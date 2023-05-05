@@ -1,4 +1,10 @@
-﻿section.communication_layout {
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;800&display=swap');
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+section.communication_layout {
     display: flex;
     flex-direction: row;
     height: calc(100svh - 80px);
@@ -8,8 +14,8 @@
 aside, main {
     height: inherit;
     overflow-x: hidden;
-    overflow-y: scroll;
 }
+
 
 iframe#communicationIframe {
     height: calc(100svh - 80px);
@@ -17,11 +23,13 @@ iframe#communicationIframe {
 }
 
 aside {
+    overflow-y: scroll;
     width: 25%;
 }
 
 main {
     width: 75%;
+    overflow-y: hidden;
 }
 
 .message-card {

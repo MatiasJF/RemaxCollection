@@ -12,17 +12,15 @@ namespace RemaxWebsite
 {
     public partial class communication : System.Web.UI.Page
     {
+        string messageID;
         protected void Page_Load(object sender, EventArgs e)
         {
             CheckUserConnected();
 
             if (!Page.IsPostBack)
             {
-                if(Request.QueryString["contact"] != null)
-                {
-                    string messageID = Request.QueryString["contact"];
-                    communicationIframe.Attributes["src"] = $"message.aspx?id={messageID}";
-                }
+                messageID = Request.QueryString["contact"];
+                communicationIframe.Attributes["src"] = $"message.aspx?id={messageID}&contact={messageID}";
                 AllUserMessages();
             }
         }
@@ -59,9 +57,10 @@ namespace RemaxWebsite
 
             foreach (DataRow row in messages.Rows)
             {
+                string otherUserId = (row["isAgent"].ToString() == "True") ? row["AgentId"].ToString() : row["ClientId"].ToString();
                 string truncatedContent = TruncateWithEllipsis(row["Content"].ToString(), 20);
                 string cardHtml = $@"
-            <div class='message-card' onclick='handleMessageClick({row["MessageID"]})'>
+            <div class='message-card' onclick='handleMessageClick({row["MessageID"]}, {otherUserId})'>
                 <div class='message-body'>
                     <h4 class='message-sender'>{row["SenderName"]}</h4>
                     <p class='message-content'>{truncatedContent}</p>
