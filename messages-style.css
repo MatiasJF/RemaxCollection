@@ -50,10 +50,9 @@ section {
 
     section p {
         height: fit-content;
-        width: fit-content;
-        padding: 8px 24px;
+        max-width: 300px;
+        padding: 10px 24px;
         border-radius: 50px;
-        white-space: pre;
     }
 
 p.left {
@@ -61,6 +60,7 @@ p.left {
     align-self: flex-start;
     background: #23232378;
     color: white;
+    max-width: 300px;
 }
 
 p.right {
@@ -68,4 +68,5 @@ p.right {
     align-self: flex-end;
     background: #2345ffc0;
     color: white;
+    max-width: 300px;
 }

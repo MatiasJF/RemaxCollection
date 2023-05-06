@@ -11,15 +11,10 @@
     <section>
         <div class="messages_view" id="messages_view" runat="server">
         </div>
-        <form id="form1" runat="server">
-            <asp:TextBox runat="server" ID="txt_messageToSend"></asp:TextBox>
+        <form id="form1" runat="server" autocomplete="off">
+            <asp:TextBox runat="server" ID="txt_messageToSend" TextMode="MultiLine"></asp:TextBox>
             <asp:Button runat="server" ID="btn_send" Text="envoyer" OnClick="btn_send_Click"/>
         </form>
     </section>
-    <script>
-        function RefreshParent() {
-            window.parent.location.href = window.parent.location.href;
-        }
-    </script>
 </body>
 </html>

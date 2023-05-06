@@ -34,7 +34,7 @@
     </header>
     <section>
         <div class="form-box">
-            <form id="form1" class="loginForm" runat="server">
+            <form id="form1" class="loginForm" runat="server" autocomplete="off">
                 <span class="title">Sign up</span>
                 <span class="subtitle">Create a free account with your email.</span>
                 <div class="form-container">

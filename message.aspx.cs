@@ -46,8 +46,6 @@ namespace RemaxWebsite
                         messages_view.Controls.Add(messageContent);
                     }
                 }
-
-                Page.RegisterStartupScript("RefreshParent", "<script language = 'javascript' > RefreshParent() </ script > ");
             }
         }
 
