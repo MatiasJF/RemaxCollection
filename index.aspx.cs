@@ -33,6 +33,7 @@ namespace RemaxWebsite
                 string connectedUserName = Session["connectedUserName"].ToString();
 
                 // Create an anchor element with the onclick attribute set to call the confirmDisconnect function
+                // <a href="#" onclick(confirmDisconnect())>CONNECTED_USER_NAME</a>
                 HtmlGenericControl anchor = new HtmlGenericControl("a");
                 anchor.Attributes.Add("href", "#");
                 anchor.Attributes.Add("onclick", "confirmDisconnect();");
@@ -42,6 +43,7 @@ namespace RemaxWebsite
             }
             else
             {
+                // <a href="#" onclick(confirmDisconnect())>sign in</a>
                 connectedUser.Controls.Add(new LiteralControl("sign in"));
             }
         }

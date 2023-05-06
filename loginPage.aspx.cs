@@ -31,6 +31,7 @@ namespace RemaxWebsite
             }
         }
 
+        // Login action
         protected void BTN_Login_Click(object sender, EventArgs e)
         {
             string email = TXT_Email.Text;

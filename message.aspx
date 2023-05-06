@@ -16,5 +16,10 @@
             <asp:Button runat="server" ID="btn_send" Text="envoyer" OnClick="btn_send_Click"/>
         </form>
     </section>
+    <script>
+        function RefreshParent() {
+            window.parent.location.href = window.parent.location.href;
+        }
+    </script>
 </body>
 </html>

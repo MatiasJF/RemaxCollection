@@ -57,20 +57,31 @@ namespace RemaxWebsite
 
             foreach (DataRow row in messages.Rows)
             {
-                string otherUserId = (row["isAgent"].ToString() == "True") ? row["AgentId"].ToString() : row["ClientId"].ToString();
+                // Check if the user connected is an Agent or Client
+                string senderId = "";
+                if (isAgent)
+                {
+                    senderId = (row["isAgent"].ToString() == "True") ? row["AgentId"].ToString() : row["ClientId"].ToString();
+                }
+                else
+                {
+                    senderId = (row["isAgent"].ToString() == "True") ? row["ClientId"].ToString() : row["AgentId"].ToString();
+                }
                 string truncatedContent = TruncateWithEllipsis(row["Content"].ToString(), 20);
                 string cardHtml = $@"
-            <div class='message-card' onclick='handleMessageClick({row["MessageID"]}, {otherUserId})'>
-                <div class='message-body'>
-                    <h4 class='message-sender'>{row["SenderName"]}</h4>
-                    <p class='message-content'>{truncatedContent}</p>
-                </div>
-            </div>";
+                    <div class='message-card' onclick='handleMessageClick({row["MessageID"]}, {senderId})'>
+                        <div class='message-body'>
+                            <h4 class='message-sender'>{row["SenderName"]}</h4>
+                            <p class='message-content'>{truncatedContent}</p>
+                        </div>
+                    </div>";
 
                 Messages.Controls.Add(new LiteralControl(cardHtml));
             }
         }
 
+
+        // Shortens message thumbnail with an ellipsis [...]
         public static string TruncateWithEllipsis(string input, int maxLength)
         {
             return string.IsNullOrEmpty(input) ? input :
@@ -78,7 +89,7 @@ namespace RemaxWebsite
                    input.Substring(0, maxLength) + "...";
         }
 
-
+        // Logout action
         protected void btnLogout_Click(object sender, EventArgs e)
         {
             Session["connectedUser"] = null;

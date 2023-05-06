@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -7,8 +8,7 @@ namespace RemaxWebsite
 {
     public partial class message : System.Web.UI.Page
     {
-        static int messageID;
-        static int otherUser;
+        static int senderId;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -17,24 +17,24 @@ namespace RemaxWebsite
                 {
                     DataRow connectedUser = (DataRow)Session["connectedUser"];
                     int userID = Convert.ToInt32(connectedUser["_id"]);
+                    senderId = Convert.ToInt32(Request.QueryString["contact"]);
                     bool isAgent = Datasource.AgentExists(connectedUser["Email"].ToString());
-                    messageID = Convert.ToInt32(Request.QueryString["id"]);
-                    otherUser = Convert.ToInt32(Request.QueryString["contact"]);
-
-                    DataTable messages = Datasource.GetAllMessages(userID, otherUser);
+                    DataTable messages = Datasource.GetAllMessages(userID, senderId);
 
                     foreach (DataRow row in messages.Rows)
                     {
+                        // Checks if the message was sent by an agent or client
+                        bool messageIsAgent = (row["isAgent"].ToString() == "True") ? true : false;
+
+                        // <p class="left"> MESSAGE_CONTENT </p>
                         HtmlGenericControl messageContent = new HtmlGenericControl("p");
                         messageContent.InnerText = row["Content"].ToString();
 
-                        bool messageIsAgent = (row["isAgent"].ToString() == "True")?true:false;
-
-                        if (isAgent && messageIsAgent)
+                        if (isAgent && messageIsAgent) // If connectedUser is Agent
                         {
                             messageContent.Attributes.Add("class", "right");
                         }
-                        else if (!isAgent && !messageIsAgent)
+                        else if (!isAgent && !messageIsAgent) // If connectedUser is Client
                         {
                             messageContent.Attributes.Add("class", "right");
                         }
@@ -46,6 +46,8 @@ namespace RemaxWebsite
                         messages_view.Controls.Add(messageContent);
                     }
                 }
+
+                Page.RegisterStartupScript("RefreshParent", "<script language = 'javascript' > RefreshParent() </ script > ");
             }
         }
 
@@ -61,10 +63,11 @@ namespace RemaxWebsite
             bool isAgent = Datasource.AgentExists(connectedUser["Email"].ToString());
  
             // Send the message
-            Datasource.AddMessage(currentUserID, otherUser, message, isAgent);
+            Datasource.AddMessage(currentUserID, senderId, message, isAgent);
 
             // Refresh the page to display the updated messages
-            Response.Redirect($"message.aspx?id={Request.QueryString["id"]}&contact={otherUser}");
+            // Refresh the parent page to display the updated messages
+            Response.Redirect($"message.aspx?id={Request.QueryString["id"]}&contact={senderId}", true);
         }
     }
 }
